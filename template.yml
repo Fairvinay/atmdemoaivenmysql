@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot 2 API - com.example.atmdemo::atmdemo
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  AtmdemoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.example.atmdemo.StreamLambdaHandler::handleRequest
+      Runtime: java21
+      CodeUri: .
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  AtmdemoApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: AtmdemoApi
+rollbar:
+ access-token: ce4f83f936f8487ca24934db5383babb
+ branch: master
+ environment: development
+ code-version: 1
