@@ -51,6 +51,7 @@ FROM openjdk:17
 #RUN mkdir /app
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar /app/spring-boot-application.jar
+EXPOSE 8080
 # "-Djava.security.egd=file:/dev/./urandom"  "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap",
 ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar"]
 #ARG JAR_FILE=build/libs/*.jar
