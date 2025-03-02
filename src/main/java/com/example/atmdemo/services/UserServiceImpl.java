@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void createUser(RegisterUserDTO registerUserDTO) {
         User user = new User();
         user.setFirstName(registerUserDTO.getFirstName());
@@ -29,22 +31,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Optional<User> getUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found for ID: " + id)));
     }
 
     @Override
+    @Transactional
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
+    @Transactional
     public void updateUser(User user, UserUpdateDTO userUpdateDTO) {
         if (userUpdateDTO.getFirstName() != null) {
             user.setFirstName(userUpdateDTO.getFirstName());
@@ -59,17 +65,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(User user) {
         assert userRepository != null;
         userRepository.delete(user);
     }
 
     @Override
+    @Transactional
     public boolean userExistsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
     @Override
+    @Transactional
     public void changePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
