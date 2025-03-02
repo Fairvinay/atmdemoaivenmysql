@@ -21,7 +21,9 @@ class IndexController {
   @ResponseBody
   public String index() {
     System.out.println(rollbar);
+    if(rollbar != null) {
     rollbar.log("log some error to Rollbar");
+    }
     return "index";
   }
 
@@ -34,7 +36,10 @@ class IndexController {
     try {
       int x = 1 / 0;
     } catch (Exception e) {
+ if(rollbar != null) {
       rollbar.log("caught an error");
+	}
+
       throw e; // you can re-raise to for the Rollbar error handler to process it;
     }
     return "index";

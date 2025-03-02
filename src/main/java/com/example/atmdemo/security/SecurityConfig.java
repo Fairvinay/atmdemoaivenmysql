@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -40,7 +41,8 @@ import org.springframework.web.filter.GenericFilterBean;
 public class SecurityConfig {
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class); 
     private final JwtAuthEntryPoint authEntryPoint;
-    
+    @Value("${spring.cors-origin}")
+	private  String  corsOrigin  ;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	
@@ -106,8 +108,8 @@ public class SecurityConfig {
     	 CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        configuration.addAllowedOriginPattern( "http://localhost:4200");
-        configuration.addAllowedOrigin( "http://localhost:4200");
+        configuration.addAllowedOriginPattern( corsOrigin);
+        configuration.addAllowedOrigin(corsOrigin);
         // response.setHeader("Access-Control-Allow-Headers", "X-Test-Header");
         configuration.setAllowedHeaders(Arrays.asList("Content-type","Authorization","Set-Cookie","X-Test-Header"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT", "DELETE"));

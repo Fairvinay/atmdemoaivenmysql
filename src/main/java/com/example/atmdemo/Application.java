@@ -1,7 +1,10 @@
 package com.example.atmdemo;
 
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 import com.example.atmdemo.controller.PingController;
@@ -23,7 +26,13 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-}
+    @Bean 
+    public ApplicationRunner serverRunning() {
+        return args -> {
+            System.out.println("Server running");
+        };
+    }
+    }
 /*
 mysql-158c35e3 
 */
