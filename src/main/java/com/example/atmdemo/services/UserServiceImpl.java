@@ -83,4 +83,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+    @Override
+    public boolean userExistsByNickname(String username) {
+        // TODO Auto-generated method stub
+       // throw new UnsupportedOperationException("Unimplemented method 'userExistsByNickname'");
+         // userExistsByNickname(username);
+         return userRepository.existsByNickname(username);
+    }
 }

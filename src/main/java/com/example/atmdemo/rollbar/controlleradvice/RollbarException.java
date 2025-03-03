@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class RollbarException extends Exception{
 	
 	public RollbarException() {
 		 super("Rollbar Exception ");
-		 if(expD != null ) {
+		 if(Objects.isNull(expD)   ) {
 			 expD = new ExceptionData();
 		 }
 	}

@@ -67,17 +67,30 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDTO) {
-        
+        try { 
         System.out.println("register user: {}"+  registerUserDTO.toString());
         logger.info("register user: {}", registerUserDTO.toString());
         if (securityService.userExistsByEmail(registerUserDTO.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already registered");
+            logger.info("register user: {} already registered ", registerUserDTO.getEmail() );
+            return ResponseEntity.badRequest().header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body("{ \"error\": \"Email already registered\" }");
+        }
+        if(userService.userExistsByNickname(registerUserDTO.getUsername())) {
+            logger.info("register user: {} already registered ", registerUserDTO.getUsername() );
+            return ResponseEntity.badRequest().header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body("{ \"error\": \"Nickname already registered\" }");
         }
         securityService.registerUser(registerUserDTO);
         return ResponseEntity.ok() 
         		//.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").body("Registration completed successfully");
+
+         } catch (Exception e) {
+            logger.info("register user: {}   ", e.getMessage() );
+            return ResponseEntity.badRequest().header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .body("{ \"error\": \"Server Error\" }");
+        }
     }
 
     @PostMapping("/login")
