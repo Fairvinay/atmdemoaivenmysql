@@ -101,7 +101,7 @@ public class SecurityConfig {
     		 
 		return gge;
 	} 
-     
+       
    
 	@Bean
     public  UrlBasedCorsConfigurationSource corsConfigurationSource(  ) {
