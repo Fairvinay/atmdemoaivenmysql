@@ -41,7 +41,7 @@ import org.springframework.web.filter.GenericFilterBean;
 public class SecurityConfig {
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class); 
     private final JwtAuthEntryPoint authEntryPoint;
-    @Value("${spring.cors-origin}")
+    //@Value("${spring.cors-origin}")
 	private  String  corsOrigin  ;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

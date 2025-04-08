@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 class Cross {
-	@Value("${spring.cors-origin}")
+	//@Value("${spring.cors-origin}")
 	  static String  corsOrigin  ;
 	
 	
@@ -40,12 +40,12 @@ class Cross {
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/user")
-@CrossOrigin(origins = { "http://localhost:4200"}, maxAge = 3600, allowedHeaders = {"Set-Cookie"})
+//@CrossOrigin(origins = { "http://localhost:4200"}, maxAge = 3600, allowedHeaders = {"Set-Cookie"})
 public class UserController {
     
     private static final Logger logger = LoggerFactory.getLogger(UserController.class); 
  
-    @Value("${spring.cors-origin}")
+    //@Value("${spring.cors-origin}")
 	  static String ourDomainPage;
     static String  localSite=  "localhost:4200";
     static String [] localSiteStrings =  { localSite,"localhost:8888","localhost:8080"};
@@ -229,11 +229,23 @@ public class UserController {
     public ResponseEntity<?> getAllPeople() {
         logger.info("people user: {}");
         List<User> people = userService.getAllUsers();
-        return ((HeadersBuilder<BodyBuilder>) ResponseEntity.ok(people))
+         // this satement give class cast exception issue 
+        /*
+      Hibernate: select u1_0.id,u1_0.email,u1_0.first_name,u1_0.last_name,u1_0.nickname,u1_0.password,u1_0.uuid,u1_0.verification_token from userone u1_0
+2025-04-06T12:34:52.629+05:30 ERROR 12272 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.ClassCastException: class org.springframework.http.ResponseEntity cannot be cast to class org.springframework.http.ResponseEntity$HeadersBuilder (org.springframework.http.ResponseEntity and org.springframework.http.ResponseEntity$HeadersBuilder are in unnamed module of loader org.springframework.boot.loader.launch.LaunchedClassLoader @37f8bb67)] with root cause
+
+java.lang.ClassCastException: class org.springframework.http.ResponseEntity cannot be cast to class org.springframework.http.ResponseEntity$HeadersBuilder (org.springframework.http.ResponseEntity and org.springframework.http.ResponseEntity$HeadersBuilder are in unnamed module of loader org.springframework.boot.loader.launch.LaunchedClassLoader @37f8bb67)
+        at com.example.atmdemo.controller.UserController.getAllPeople(UserController.java:232) ~[!/:0.0.1-SNAPSHOT]
+        at    
+         */
+      //  return ((HeadersBuilder<BodyBuilder>) ResponseEntity.ok(people))
         // header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
-        .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
-        .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").build();
+       // .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
+       // .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").build();
+        return ResponseEntity.ok(people); // 👈 this is correct
     }
+    
+    
 
     @PatchMapping("/person")
     public ResponseEntity<?> updateUserByNickname(HttpServletRequest request, @RequestBody UserUpdateDTO userUpdateDTO) {

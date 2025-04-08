@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+//@Table(name = "userone") // ths only for railway app 
 public class User {
     @Id
     @GeneratedValue(strategy =GenerationType.AUTO)  // GenerationType.AUTO SEQUENCE
@@ -26,7 +27,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}) // CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     @JoinTable(
-            name = "users_roles",schema = "atmdemo",
+          name = "users_roles",schema = "atmdemo",
             joinColumns = {@JoinColumn(name = "users_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id", referencedColumnName = "id")})
     private List<Role> roles;
