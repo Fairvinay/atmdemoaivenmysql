@@ -100,7 +100,7 @@ public class SecurityConfig {
     	GenericFilterBean gge = new SessionFilter();
     		 
 		return gge;
-	}
+	} 
 
    
 	@Bean
