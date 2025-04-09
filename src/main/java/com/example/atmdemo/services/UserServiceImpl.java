@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(timeout = 50) // 5 seconds timeout
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    @Transactional
+    @Transactional(timeout = 25) // 5 seconds timeout
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(timeout = 50) // 5 seconds timeout
     public boolean userExistsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
     @Override
+    @Transactional(timeout = 50) // 5 seconds timeout
     public boolean userExistsByNickname(String username) {
         // TODO Auto-generated method stub
        // throw new UnsupportedOperationException("Unimplemented method 'userExistsByNickname'");

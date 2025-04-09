@@ -17,7 +17,7 @@ public class UserProfileDTO {
     private String lastName;
     private String nickname;
     private String email;
-    private List<Role> roles;
+    private List<RoleDTO> roles;
 
     public UserProfileDTO(User user) {
         this.id = user.getId();
@@ -25,6 +25,9 @@ public class UserProfileDTO {
         this.lastName = user.getLastName();
         this.nickname = user.getNickname();
         this.email = user.getEmail();
-        this.roles = user.getRoles();
+        this.roles = user.getRoles()
+                .stream()
+                .map(RoleDTO::new)
+                .toList();
     }
 }

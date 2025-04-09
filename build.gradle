@@ -65,7 +65,8 @@ compileOnly('org.hibernate:hibernate-hikaricp:5.2.11.Final') {
   implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0-M1'	
   implementation group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version: '6.0.5.Final'
   implementation group: 'com.gitlab.johnjvester', name: 'random-generator', version: '1.9'
-  implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.3.Final'
+  implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+  //implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.3.Final'
   implementation group: 'com.rollbar', name: 'rollbar-spring6-webmvc', version: '2.0.0'
    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
     //runtimeOnly "mysql:mysql-connector-java:8.0.28"
@@ -81,7 +82,10 @@ compileOnly('org.hibernate:hibernate-hikaricp:5.2.11.Final') {
      implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.3'
      implementation 'com.sun.xml.bind:jaxb-impl:4.0.3'
      implementation 'jakarta.activation:jakarta.activation-api:2.1.1'
-    
+     //can remove that line to avoid redundancy unless you
+     //implementation 'jakarta.validation:jakarta.validation-api'
+    // Jakarta Expression Language (needed for validator to parse things like @Email, etc.)
+      implementation 'org.glassfish:jakarta.el:4.0.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
     //implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'

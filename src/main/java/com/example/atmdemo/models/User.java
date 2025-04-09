@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +27,14 @@ public class User {
     private UUID uuid;
     private String verificationToken;
 
+    
+    /* USED for select u.users_id,r.id,r.name from users_roles u join role r 
+     *           on r.id=u.roles_id where u.users_id=?
+                 DefaultHandlerExceptionResolver : Ignoring exception, response committed already:
+            Could not write JSON: Infinite recursion (StackOverflowError)    
+     *
+     */
+    @JsonManagedReference 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}) // CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     @JoinTable(
           name = "users_roles",schema = "atmdemo",

@@ -3,6 +3,8 @@ package com.example.atmdemo.models;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,15 @@ public class Role {
     private Long id;
     private String name;
     
+    
+    
+    /* USED for select u.users_id,r.id,r.name from users_roles u join role r 
+     *           on r.id=u.roles_id where u.users_id=?
+                 DefaultHandlerExceptionResolver : Ignoring exception, response committed already:
+            Could not write JSON: Infinite recursion (StackOverflowError)    
+     *
+     */
+    @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
     

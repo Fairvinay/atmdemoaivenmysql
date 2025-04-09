@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -85,7 +86,10 @@ public class UserController {
         		//.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").body("Registration completed successfully");
-
+         } catch (TransactionTimedOutException e) {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+                    .body("Request timed out. Please try again later.");
+           
          } catch (Exception e) {
             logger.info("register user: {}   ", e.getMessage() );
             return ResponseEntity.badRequest().header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -155,7 +159,10 @@ public class UserController {
                             .getNickname()));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login credentials");
-        }
+        } catch (TransactionTimedOutException e) {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+                    .body("Request timed out. Please try again later.");
+          }
     }
 
     @PostMapping("/logout")
@@ -228,7 +235,11 @@ public class UserController {
     @GetMapping("/people")
     public ResponseEntity<?> getAllPeople() {
         logger.info("people user: {}");
+        try {
         List<User> people = userService.getAllUsers();
+        List<UserProfileDTO> dtos = people.stream()
+                .map(UserProfileDTO::new)
+                .toList();
          // this satement give class cast exception issue 
         /*
       Hibernate: select u1_0.id,u1_0.email,u1_0.first_name,u1_0.last_name,u1_0.nickname,u1_0.password,u1_0.uuid,u1_0.verification_token from userone u1_0
@@ -242,7 +253,13 @@ java.lang.ClassCastException: class org.springframework.http.ResponseEntity cann
         // header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
        // .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
        // .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").build();
-        return ResponseEntity.ok(people); // 👈 this is correct
+           return ResponseEntity.ok(dtos); // 👈 this is correct
+        
+        } catch (TransactionTimedOutException e) {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+                                 .body("Request timed out. Please try again later.");
+        }
+        
     }
     
     

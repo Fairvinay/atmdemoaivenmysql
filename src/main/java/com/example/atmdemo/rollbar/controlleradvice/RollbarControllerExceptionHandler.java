@@ -40,6 +40,21 @@ import lombok.extern.slf4j.Slf4j;
 	    rollbar.error(e.getMessage(), re.getRollbarExceptionData().getRollbarMap());
 	   response.setStatus(HttpStatus.BAD_REQUEST.value());
 	 
-	   }*/
+	   }
+	   
+	   
+	   @ExceptionHandler(TransactionTimedOutException.class)
+       public ResponseEntity<String> handleTransactionTimeout(TransactionTimedOutException ex) {
+          return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+                         .body("The request took too long to complete.");
+         }
+
+	   
+	   
+	   
+	   
+	   
+	   *
+	   */
 	 
 	}
