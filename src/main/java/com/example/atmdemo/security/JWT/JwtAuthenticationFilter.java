@@ -89,7 +89,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                      logger.info("Cookie removed HttpOnly ... "+noHttp);
                      response.setHeader("Access-Control-Allow-Headers", "Set-Cookie");
                      response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-                     response.setHeader("Access-Control-Allow-Origin", "*");
+                   //  response.setHeader("Access-Control-Allow-Origin", "*");
+                     response.setHeader("Access-Control-Allow-Origin",corsOrigin);
                     System.out.println("Access-Control-Allow-Origin *" );
                     System.out.println("spring.cors-origin  " +corsOrigin);
                      response.setHeader("Access-Control-Allow-Headers", "X-Test-Header");

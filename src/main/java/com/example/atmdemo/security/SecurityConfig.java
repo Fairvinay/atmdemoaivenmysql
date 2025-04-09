@@ -41,7 +41,8 @@ import org.springframework.web.filter.GenericFilterBean;
 public class SecurityConfig {
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class); 
     private final JwtAuthEntryPoint authEntryPoint;
-     @Value("${spring.web.cors.allowed-origins}")
+    //  @Value("${spring.web.cors.allowed-origins}")
+       @Value("${spring.cors-origin}")
 	private  String  corsOrigin  ;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -107,18 +108,22 @@ public class SecurityConfig {
     public  UrlBasedCorsConfigurationSource corsConfigurationSource(  ) {
     	 CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        configuration.setAllowedOriginPatterns( List.of(
+        configuration.addAllowedOriginPattern(corsOrigin); 
+       /* configuration.setAllowedOriginPatterns( List.of(
                 "https://storenotify.in",
                 "http://localhost:4200",
                 "http://localhost:8888"
             ));
+        // does not work with 	Access to XMLHttpRequest at 'https://atmdemoaivenmysql.onrender.com/api/v1/user/register' from origin 'https://storenotify.in'    
+            
+        */
         //configuration.addAllowedOrigin(corsOrigin);
         // response.setHeader("Access-Control-Allow-Headers", "X-Test-Header");
         configuration.setAllowedHeaders(Arrays.asList("Content-type","Authorization","Set-Cookie","X-Test-Header"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT", "DELETE"));
         configuration.addAllowedHeader("X-Test-Header");
-        logger.info("Added CORS CorsConfiguration setAllowedOriginPatterns  List.of "+Arrays.toString(List.of(corsOrigin).toArray()));
+       // logger.info("Added CORS CorsConfiguration setAllowedOriginPatterns  List.of "+Arrays.toString(List.of(corsOrigin).toArray()));
+        logger.info("Added CORS CorsConfiguration addAllowedOriginPattern   " +corsOrigin );
         /*         
        When allowCredentials is true, allowedOrigins cannot contain the special value "*" 
        since that cannot be set on the "Access-Control-Allow-Origin" response header. 

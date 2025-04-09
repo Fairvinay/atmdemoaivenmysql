@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 class Cross {
-	//@Value("${spring.cors-origin}")
+	 @Value("${spring.cors-origin}")
 	  static String  corsOrigin  ;
 	
 	
@@ -41,12 +41,16 @@ class Cross {
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/user")
-//@CrossOrigin(origins = { "http://localhost:4200"}, maxAge = 3600, allowedHeaders = {"Set-Cookie"})
+@CrossOrigin(origins = { "http://localhost:8888", "http://localhost:4200","https://storenotfy.in","https://www.storenotfy.in" },
+    maxAge = 3600, allowedHeaders = {"Set-Cookie","X-Test-Header"},exposedHeaders = {
+            "Authorization",
+            "Set-Cookie","X-Test-Header"
+        })
 public class UserController {
     
     private static final Logger logger = LoggerFactory.getLogger(UserController.class); 
  
-    //@Value("${spring.cors-origin}")
+     @Value("${spring.cors-origin}")
 	  static String ourDomainPage;
     static String  localSite=  "localhost:4200";
     static String [] localSiteStrings =  { localSite,"localhost:8888","localhost:8080"};
@@ -83,6 +87,7 @@ public class UserController {
         }
         securityService.registerUser(registerUserDTO);
         return ResponseEntity.ok() 
+        		 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, Cross.corsOrigin)
         		//.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
                 .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE").body("Registration completed successfully");
@@ -148,6 +153,7 @@ public class UserController {
            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY) ;
            */
            return ResponseEntity.ok()
+        		         .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, Cross.corsOrigin)
                        // .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:4200,https://storenotify.in")
                         .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie")
                         .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "POST, PUT, GET, OPTIONS, DELETE")
