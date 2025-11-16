@@ -47,7 +47,8 @@ RUN echo $APP_HOME
 #FROM adoptopenjdk/openjdk17:alpine-jre
 #FROM openjdk:latest
 #FROM openjdk:17-jdk-slim
-FROM openjdk:17
+FROM eclipse-temurin:17-jdk
+#FROM openjdk:17
 #RUN mkdir /app
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar /app/spring-boot-application.jar
